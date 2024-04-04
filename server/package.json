@@ -12,6 +12,11 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.3"
+  },
+  "devDependencies": {
+    "sequelize": "^6.37.2",
+    "sequelize-cli": "^6.6.2"
   }
 }
