@@ -1,0 +1,10 @@
+Introduction
+This repository contains a 
+Node.js-React.js application. 
+This application is built using Node.js for the backend and React.js for the frontend. 
+It serves as a boilerplate/template for building full-stack web applications.
+
+Requirements
+Node.js (version v18.19.1 or higher)
+npm (version 10.2.4 or higher)
+mysql
