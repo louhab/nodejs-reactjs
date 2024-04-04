@@ -8,3 +8,14 @@ Requirements
 Node.js (version v18.19.1 or higher)
 npm (version 10.2.4 or higher)
 mysql
+git clone https://github.com/louhab/nodejs-reactjs.git
+
+
+Folder Structure
+/client: Contains the frontend React.js application.
+/server: Contains the backend Node.js application.
+Contributing
+Contributions are welcome! If you find any bugs or have feature requests, 
+please open an issue or submit a pull request.
+Contact
+For any inquiries or suggestions, feel free to contact [louhab.abderazzak@gmail.con].
