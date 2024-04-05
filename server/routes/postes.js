@@ -25,5 +25,18 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.get("/:id", async (req,res)=>{
+    try {   
+        const id = req.params.id
+        // if u want use a condition : 
+        // find by primary key
+        const post = await Posts.findByPk(id);
+        res.json(post);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
     
     

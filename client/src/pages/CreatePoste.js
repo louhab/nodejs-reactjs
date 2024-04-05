@@ -1,14 +1,15 @@
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup'; // Import Yup library
+import { useNavigate } from 'react-router-dom';
 
 function CreatePoste() {
+    const navigate = useNavigate(); 
     const initialValues = {
         title: "",
         postText: "",
         username: ""
     };
-
     const validationSchema = Yup.object().shape({
         title: Yup.string().required("you must put a title"),
         postText: Yup.string().required("you must put a poste texte"),
@@ -20,14 +21,13 @@ function CreatePoste() {
         axios.post("http://localhost:10/posts", data)
         .then((response)=>{
             console.log(response);
+            navigate("/")
         })
         .catch((error) => {
             console.error('Error occurred while making POST request:', error);
         });
     };
-    
-
-    return (
+return (
         <div className="formContainer">
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form>
@@ -52,5 +52,4 @@ function CreatePoste() {
         </div>
     );
 }
-
 export default CreatePoste;
