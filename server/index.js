@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 10;
+const cors = require("cors");
 const db = require("./models");
 db.sequelize.sync().then(()=>{
     app.listen(port, () => {
@@ -8,6 +9,7 @@ db.sequelize.sync().then(()=>{
     });    
 })
 app.use(express.json());
+app.use(cors())
 const postRoute = require("./routes/postes");
 app.use("/posts",postRoute);
 
