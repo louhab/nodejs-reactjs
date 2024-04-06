@@ -21,15 +21,20 @@ function Home() {
     }
   return (
     <div className="App">
-      {
-        posts.map((value,key)=>{
-        return <div className='post' key={key} onClick={()=>  handleNavigation(value.id) }>
-                    <div className='title'>  { value.title  } </div>
-                    <div className='body'>  { value.postText  } </div>
-                    <div className='footer'>  { value.username  } </div>    
-              </div>    
-        })
-      }
+    {posts && posts.length > 0 ? (
+  // Render posts if the 'posts' array is not empty and defined
+  posts.map((value, key) => (
+    <div className='post' key={key} onClick={() => handleNavigation(value.id)}>
+      <div className='title'>{value.title}</div>
+      <div className='body'>{value.postText}</div>
+      <div className='footer'>{value.username}</div>
+    </div>
+  ))
+) : (
+  // Render a message if 'posts' array is empty or undefined
+  <div>Show posts yet</div>
+)}
+
     </div>
   );
 }

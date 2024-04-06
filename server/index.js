@@ -11,7 +11,16 @@ db.sequelize.sync().then(()=>{
 app.use(express.json());
 app.use(cors())
 const postRoute = require("./routes/postes");
-app.use("/posts",postRoute);
+app.use("/posts", postRoute);
+
+
+const commentRouter = require("./routes/Comments");
+app.use("/comments", commentRouter);
+
+
+
+const userRouter = require("./routes/users");
+app.use("/users", userRouter);
 
 
 // nodejsreact is the name of data base to connecte 

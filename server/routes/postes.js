@@ -3,7 +3,6 @@ const router = express.Router();
 module.exports = router;
 const {Posts} =require("../models");
 
-
 router.get("/", async (req,res)=>{
     try {
         const allPosts = await Posts.findAll();
@@ -13,7 +12,6 @@ router.get("/", async (req,res)=>{
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-
 router.post("/", async (req, res) => {
     try {
         var post = req.body; 
