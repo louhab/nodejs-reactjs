@@ -24,7 +24,6 @@ function Login() {
     axios.post("http://localhost:10/users/login", data)
       .then(response => {
         sessionStorage.setItem("accessToken",response.data)
-        console.log("Response received:", response.data);
         if (response.data && response.data.error !== "Wrong Username And Password Combination") {
            toast.success("You logged succesuffly");  
            setTimeout(() => {

@@ -1,18 +1,16 @@
-const { verify } = require("jsonwebtoken");
-
-const validatedToken = (req, res, next) => {
-    const accessToken = req.header("accessToken");
-    if (!accessToken) return res.json({ error: "User not logged in" });
-
-    try {
-        const decodedToken = verify(accessToken, "important secret");
-        if (decodedToken) {
-            return next();    
-        } 
-    } catch (error) {
-        return res.json({ error: "User not logged in" });   
+// AuthMiddleware.js
+const jwt = require('jsonwebtoken');
+const validateToken = (req, res, next) => {
+    const token = req.headers.authorization
+    SECRET = "importantsecret";
+    if (!token) {
+        return res.status(401).json({ error: 'Token not provided' });
     }
+    const validatedToken = jwt.verify(token, SECRET);
+    if (validatedToken) {
+        return  next();  
+    }
+    
 };
 
-module.exports = validatedToken;
-
+module.exports = validateToken;

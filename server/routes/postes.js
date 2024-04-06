@@ -5,7 +5,7 @@ const { Posts } = require("../models");
 const validatedToken = require('../middleware/AuthMiddleware');
 
 
-router.get("/", validatedToken , async (req,res)=>{
+router.get("/" , async (req,res)=>{
     try {
         const allPosts = await Posts.findAll();
         res.json(allPosts);
@@ -14,7 +14,7 @@ router.get("/", validatedToken , async (req,res)=>{
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-router.post("/",validatedToken , async (req, res) => {
+router.post("/" , async (req, res) => {
     try {
         var post = req.body; 
         await Posts.create(post);
@@ -25,7 +25,7 @@ router.post("/",validatedToken , async (req, res) => {
     }
 });
 
-router.get("/:id", validatedToken ,async (req,res)=>{
+router.get("/:id" ,async (req,res)=>{
     try {   
         const id = req.params.id
         const post = await Posts.findByPk(id);

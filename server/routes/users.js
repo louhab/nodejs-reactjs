@@ -4,7 +4,6 @@ const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 
 const { sign } = require("jsonwebtoken");
-const { json } = require("sequelize");
 
 router.post("/", async (req, res) => {
     const { username, password } = req.body;

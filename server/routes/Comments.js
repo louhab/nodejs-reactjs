@@ -3,7 +3,7 @@ const router = express.Router();
 const { Comments } = require("../models");
 const validatedToken = require('../middleware/AuthMiddleware');
 
-router.get("/:postId", validatedToken , async (req, res) => {
+router.get("/:postId" , validatedToken ,  async (req, res) => {
   try {
     const postId = req.params.postId;
     const comments = await Comments.findAll({ where: { PostId: postId } });
@@ -15,7 +15,7 @@ router.get("/:postId", validatedToken , async (req, res) => {
   }
 })
 
-router.post("/" ,validatedToken , async (req, res) => {
+router.post("/"  , validatedToken ,   async (req, res) => {
     try {
     const { commentBody, PostId } = req.body;
     if (!commentBody || !PostId) {
