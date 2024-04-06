@@ -5,8 +5,6 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-
-
 function Login() {
   const navigate = useNavigate();
   const showErrorToast = (message) => {
@@ -24,8 +22,9 @@ function Login() {
     });
   const onSubmit = (data) => {
     axios.post("http://localhost:10/users/login", data)
-    .then(response => {
-        console.log("Response received:", response);
+      .then(response => {
+        sessionStorage.setItem("accessToken",response.data)
+        console.log("Response received:", response.data);
         if (response.data && response.data.error !== "Wrong Username And Password Combination") {
            toast.success("You logged succesuffly");  
            setTimeout(() => {

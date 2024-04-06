@@ -27,30 +27,36 @@ function Poste() {
       });
   }, [id]);     
   const addComment = (data) => {
-    data =   {
-          commentBody: newComment,
-          PostId: id,
-        }
     axios
       .post(
         "http://localhost:10/comments",
-        data
+        {
+          commentBody: newComment,
+          PostId: id,
+        },
+        {
+          headers: { 
+            accessToken : sessionStorage.getItem("accessToken")
+          }
+        }
       )
       .then((response) => {
         if (response.data.error) {
-          console.log(response.data.error);
-        } else {
-          const commentToAdd = {
-            commentBody: newComment,
-            username: response.data.username,
-          };
+          if (response.data.error === "User not logged in")
+          {
+            toast.error("The Post was not created successuflly ")
+          } 
+          else {
+            toast.success("The Post was  created successuflly ")
           setTimeout(function() {
               window.location.reload();
           }, 2000);
+            }
         }
-        toast("The Post was created successuflly ")
-
-      });
+      }).catch((error) => { 
+        console.log(error)
+        toast.error("The Post was not created successuflly ")
+      })
   };
   
   return (
@@ -70,7 +76,7 @@ function Poste() {
             <button onClick={addComment}>Add new Comment</button>
           </div>
           <div className="listOfComments">
-            {comments.map((comment, key) => (
+            {comments.length > 0 && comments.map((comment, key) => (
               <div className="comment" key={key}>
                 {comment.CommentBody} 
               </div>

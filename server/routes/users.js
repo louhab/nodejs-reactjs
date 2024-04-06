@@ -3,6 +3,9 @@ const router = express.Router();
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 
+const { sign } = require("jsonwebtoken");
+const { json } = require("sequelize");
+
 router.post("/", async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -30,7 +33,10 @@ router.post("/login", async (req, res) => {
     }
     bcrypt.compare(password, user.password).then((match) => {
         if (!match) return res.json({ error: "Wrong Username And Password Combination" });
-        res.json("YOU LOGGED IN!!!");
+        const accessToken = sign({ username: user.username, id: user.id },
+        "importantsecret"
+        );
+        res.json(accessToken);
     }).catch(error => {
         console.error("Error comparing passwords:", error);
         res.status(500).send("Error comparing passwords");
