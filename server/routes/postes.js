@@ -25,9 +25,13 @@ router.post("/" , validatedToken , async (req, res) => {
     }
 });
 
-router.get("/:id", validatedToken, (req, res) => {
+router.get("/:id", validatedToken, async (req, res) => {
     const id = req.params.id
-        const post = Posts.findByPk(id);
+    console.log("the id is ", id)
+        console.log(req.header)
+
+    const post = await Posts.findByPk(id);
+      console.log(post)
         res.json(post);
 })
 

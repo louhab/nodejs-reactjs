@@ -17,6 +17,7 @@ function Poste() {
   const [newComment, setNewComment] = useState("");
   const { id } = useParams();
   const COMMENT_URL = "http://localhost:10/comments";
+    const POST_URL = "http://localhost:10/posts";
   const USER_NOT_LOGGED_IN_ERROR = "User not logged in";
   const Success_Created_Comment = "Le commentaire a été créé avec succès";
   const Error_Comment = "Une erreur s'est produite lors de la création du commentaire";
@@ -26,13 +27,14 @@ function Poste() {
     fetchComments();
   }, [id]);
   const fetchPostData = () => {
-    axios.get(`${COMMENT_URL}/${id}`,
+    axios.get(`${POST_URL}/${id}`,
     {
       headers: {
         Authorization: accessToken
       }}
     )
       .then((response) => {
+        console.log("the post is " , response.data)
         setPost(response.data);
       })
       .catch((error) => {
