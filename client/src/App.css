@@ -334,5 +334,7 @@ button {
   margin-top: 10px;
   color: gray;
 }
+.listOfComments button {
+ margin-left: 700px;
 
-
+}

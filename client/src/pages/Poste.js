@@ -17,11 +17,25 @@ function Poste() {
   const [newComment, setNewComment] = useState("");
   const { id } = useParams();
   const COMMENT_URL = "http://localhost:10/comments";
-    const POST_URL = "http://localhost:10/posts";
+  const POST_URL = "http://localhost:10/posts";
   const USER_NOT_LOGGED_IN_ERROR = "User not logged in";
   const Success_Created_Comment = "Le commentaire a été créé avec succès";
   const Error_Comment = "Une erreur s'est produite lors de la création du commentaire";
   const accessToken = sessionStorage.getItem("accessToken")
+  const deleteComment = (id) => {
+  axios.delete(`${COMMENT_URL}/${id}`, {
+      headers: {
+        Authorization: accessToken
+      }
+    })
+      .then((response) => {
+        setComments(response.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Error fetching comments:', error);
+      });
+  }
   useEffect(() => {
     fetchPostData();
     fetchComments();
@@ -34,7 +48,6 @@ function Poste() {
       }}
     )
       .then((response) => {
-        console.log("the post is " , response.data)
         setPost(response.data);
       })
       .catch((error) => {
@@ -49,6 +62,7 @@ function Poste() {
     })
       .then((response) => {
         setComments(response.data);
+        
       })
       .catch((error) => {
         console.error('Error fetching comments:', error);
@@ -111,6 +125,9 @@ function Poste() {
               <div className="comment" key={key}>
                 {comment.CommentBody} <br></br>
                 <label className="justify-end">User Name : {comment.username}</label>
+                <button onClick={()=>deleteComment(comment.id)}>
+                     x
+                </button>
               </div>
             ))}
           </div>
