@@ -11,19 +11,19 @@ import { AuthContext } from "../helpers/AuthContext";
 function CreatePoste() {
   const Post_EndPoint_Constant = "http://localhost:10/posts";
   const Success_creating_the_post = "The post has been created successfully";
-    const authContext = useContext(AuthContext);
-    useEffect(() => {
-      const accessToken = sessionStorage.getItem("accessToken");
+  const authContext = useContext(AuthContext);
+  const accessToken = sessionStorage.getItem("accessToken");
+  useEffect(() => {
      if (accessToken) {
         authContext.setAuthState(true);
     }
     }, []);
-    const navigate = useNavigate();
-    const initialValues = {
-      title: "",
-      postText: "",
-      username: ""
-    };
+  const navigate = useNavigate();
+  const initialValues = {
+    title: "",
+    postText: "",
+    username: ""
+  };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("You must enter a title"),
     postText: Yup.string().required("You must enter post text"),
@@ -36,12 +36,11 @@ function CreatePoste() {
       postText: data.postText,
     }, {
       headers: {
-        Authorization: sessionStorage.getItem("accessToken")
+        Authorization: accessToken
       }
     })
       .then((response) => {
         if (response.status === 200) {
-          // Notify user on successful post creation and reset the form
           toast.success(Success_creating_the_post);
           setTimeout(() => {
             resetForm();

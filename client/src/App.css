@@ -133,15 +133,43 @@ span {
   text-decoration: none;
   color: white;
 }
-
 .navbar button {
-  width: 100px;
+  width: 40px;
   height: 40px;
   cursor: pointer;
   margin-right: 10px;
   background-color: white;
 }
 
+.navbar {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.navbar button {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin-right: 10px;
+  background-color: white;
+  margin-left: 1000px;
+}
+
+.logoutButton {
+  background-color: #ff7f50; /* Coral color for a warm feel */
+  color: white; /* White text for contrast */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Comfortable padding */
+  font-size: 16px; /* Clear readable font size */
+  cursor: pointer; /* Cursor changes to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  margin-left: auto; /* Pushes the logout button to the end */
+}
+
+.logoutButton:hover {
+  background-color: #ff6347; /* Darker coral color on hover */
+}
 .navbar h1 {
   text-align: right;
   margin-right: 10px;
@@ -261,3 +289,50 @@ button {
 .loginContainer input {
   border: 2px solid dodgerblue;
 }
+.logoutButton {
+    background-color: #ff7f50; /* Coral color for a warm feel */
+    color: white; /* White text for contrast */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Comfortable padding */
+    font-size: 16px; /* Clear readable font size */
+    cursor: pointer; /* Cursor changes to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    width: 120px; /* Adjusted width */
+}
+
+.logoutButton:hover {
+    background-color: #ff6347; /* Darker coral color on hover */
+}
+
+.post-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.post {
+  flex: 0 0 calc(33.33% - 20px); /* Adjust this value as per your requirement */
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.post:hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.body {
+  margin-top: 10px;
+}
+
+.footer {
+  margin-top: 10px;
+  color: gray;
+}
+
+

@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState , useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 import { AuthContext } from "../helpers/AuthContext";
 import "../App.css";
-
 function Poste() {
   const authContext = useContext(AuthContext);
      useEffect(() => {
@@ -13,23 +12,26 @@ function Poste() {
         authContext.setAuthState(true);
     }
   }, []);
-  // Constantes et variables d'état
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { id } = useParams();
   const COMMENT_URL = "http://localhost:10/comments";
   const USER_NOT_LOGGED_IN_ERROR = "User not logged in";
-
-  // Effets secondaires
+  const Success_Created_Comment = "Le commentaire a été créé avec succès";
+  const Error_Comment = "Une erreur s'est produite lors de la création du commentaire";
+  const accessToken = sessionStorage.getItem("accessToken")
   useEffect(() => {
     fetchPostData();
     fetchComments();
   }, [id]);
-
-  // Fonction pour récupérer les détails du poste
   const fetchPostData = () => {
-    axios.get(`http://localhost:10/posts/${id}`)
+    axios.get(`${COMMENT_URL}/${id}`,
+    {
+      headers: {
+        Authorization: accessToken
+      }}
+    )
       .then((response) => {
         setPost(response.data);
       })
@@ -37,12 +39,10 @@ function Poste() {
         console.error('Error fetching post:', error);
       });
   };
-
-  // Fonction pour récupérer les commentaires
   const fetchComments = () => {
-    axios.get(`http://localhost:10/comments/${id}`, {
+    axios.get(`${COMMENT_URL}/${id}`, {
       headers: {
-        Authorization: sessionStorage.getItem("accessToken")
+        Authorization: accessToken
       }
     })
       .then((response) => {
@@ -52,8 +52,6 @@ function Poste() {
         console.error('Error fetching comments:', error);
       });
   };
-
-  // Fonction pour ajouter un commentaire
   const addComment = () => {
     axios.post(COMMENT_URL,
       {
@@ -62,18 +60,17 @@ function Poste() {
       },
       {
         headers: {
-          Authorization: sessionStorage.getItem("accessToken")
+          Authorization: accessToken
         }
       }
     )
       .then(handleCreateCommentResponse)
       .catch(handleCreateCommentError);
   };
-
   // Gestion de la réponse de création de commentaire
   const handleCreateCommentResponse = (response) => {
     if (response.status === 200 && response.data.error !== USER_NOT_LOGGED_IN_ERROR) {
-      toast.success("Le commentaire a été créé avec succès");
+      toast.success(Success_Created_Comment);
       setTimeout(() => {
         window.location.reload();
       }, 2000);
@@ -81,13 +78,11 @@ function Poste() {
       handleCreateCommentError();
     }
   };
-
   // Gestion des erreurs lors de la création de commentaire
   const handleCreateCommentError = (error) => {
     console.error(error);
-    toast.error("Une erreur s'est produite lors de la création du commentaire");
+    toast.error(Error_Comment);
   };
-
   // Rendu JSX
   return (
     <div className="container">
@@ -122,5 +117,4 @@ function Poste() {
     </div>
   );
 }
-
 export default Poste;

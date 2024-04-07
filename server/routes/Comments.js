@@ -5,9 +5,13 @@ const validatedToken = require('../middleware/AuthMiddleware');
 
 router.get("/:postId" , validatedToken ,  async (req, res) => {
   try {
+
+    console.log( "this the token " , req.headers.authorization)
     const postId = req.params.postId;
+
     const comments = await Comments.findAll({ where: { PostId: postId } });
     res.json(comments);
+
   } catch (error) {
     // Handle any errors that occur during data retrieval
     console.error("Error fetching comments:", error);

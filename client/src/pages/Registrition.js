@@ -9,24 +9,22 @@ import "../App.css";
 
 function Registration() {
     const navigate = useNavigate();
-
+    const accessToken = sessionStorage.getItem("accessToken")
     // Initial form values
     const initialValues = {
         username: "",
         password: "",
     };
-
     // Validation schema using Yup
     const validationSchema = Yup.object().shape({
         username: Yup.string().min(3).max(300).required(""),
         password: Yup.string().min(3).max(20).required(""),
     });
-
     // Function to handle form submission
     const onSubmit = (data) => {
         axios.post("http://localhost:10/users", data, {
             headers: {
-                Authorization: sessionStorage.getItem("accessToken")
+                Authorization: accessToken
             }
         })
         .then(response => {
@@ -41,8 +39,7 @@ function Registration() {
             console.error('Error:', error);
         });
     };
-
-    return (
+return (
         <div className="formContainer">
             <ToastContainer />
             {/* Formik wrapper for form handling */}
@@ -52,12 +49,10 @@ function Registration() {
                     <label htmlFor="username" className="label">Username</label>
                     <ErrorMessage name="username" component="span" className="username" />
                     <Field id="username" name="username" placeholder="(Ex, username...)" className="input" />
-
                     {/* Password input */}
                     <label htmlFor="password" className="label">Password:</label>
                     <ErrorMessage name="password" component="span" className="error" />
                     <Field type="password" id="password" name="password" placeholder="(Ex, password...)" className="input" />
-
                     {/* Submit button */}
                     <button type="submit" className="button">Create account</button>
                 </Form>
@@ -65,5 +60,4 @@ function Registration() {
         </div>
     );
 }
-
 export default Registration;
