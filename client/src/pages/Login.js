@@ -5,13 +5,20 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../helpers/AuthContext";
+import { useContext,useEffect } from "react";
+
 function Login() {
   const navigate = useNavigate();
-  const showErrorToast = (message) => {
-    toast.error(message, {
-      autoClose: 5000, // Auto close the toast after 5 seconds
-    });
-  };
+    const LOGIN_URL = "http://localhost:10/users/login";
+    const Wrong_User_Namr_Or_Password = "Wrong Username And Password Combination";
+    const Error_authenticated = "Erreur lors de l'authentification";
+    const authContext = useContext(AuthContext);
+    const showErrorToast = (message) => {
+      toast.error(message, {
+        autoClose: 5000, 
+      });
+    };
     const initialValues = {
         username: "",
         password: "",
@@ -20,21 +27,28 @@ function Login() {
         username: Yup.string().min(3).max(15).required(""),
         password: Yup.string().min(3).max(20).required(""),
     });
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+        authContext.setAuthState(true);
+    }
+    }, []);
   const onSubmit = (data) => {
-    axios.post("http://localhost:10/users/login", data)
+    axios.post(LOGIN_URL, data)
       .then(response => {
-        sessionStorage.setItem("accessToken",response.data)
-        if (response.data && response.data.error !== "Wrong Username And Password Combination") {
-           toast.success("You logged succesuffly");  
+        sessionStorage.setItem("accessToken", response.data)
+        authContext.setAuthState(true);
+        if (response.data && response.data.error !== Wrong_User_Namr_Or_Password) {
+           toast.success("You logged succesfully");  
            setTimeout(() => {
              navigate("/");
           }, 2000);
         } else {
-             showErrorToast("Erreur lors de l'authentification");
+             showErrorToast(Error_authenticated);
         }
     })
     .catch(error => {
-          showErrorToast("Erreur lors de l'authentification");
+          showErrorToast(Error_authenticated);
     });
     };
     return (

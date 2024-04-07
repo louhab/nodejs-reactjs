@@ -3,7 +3,11 @@ module.exports = (sequelize, DataTypes) => {
         CommentBody: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        },
+        username:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     });
     return Comments;
 };

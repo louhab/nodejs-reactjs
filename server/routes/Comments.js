@@ -16,14 +16,15 @@ router.get("/:postId" , validatedToken ,  async (req, res) => {
 })
 
 router.post("/"  , validatedToken ,   async (req, res) => {
-    try {
+  try {
     const { commentBody, PostId } = req.body;
     if (!commentBody || !PostId) {
       return res.status(400).json({ error: 'commentBody and postId are required' });
     }
     const comment = await Comments.create({
       CommentBody: commentBody,
-      PostId: PostId 
+      PostId: PostId,
+      username: req.user.username
     });
     res.json(comment);
   } catch (error) {

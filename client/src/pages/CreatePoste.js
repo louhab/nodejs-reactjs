@@ -1,4 +1,4 @@
-import React from "react";
+import { React,useContext,useEffect  } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
@@ -6,27 +6,31 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./CreatePoste.css";
+import { AuthContext } from "../helpers/AuthContext";
 
 function CreatePoste() {
-  const navigate = useNavigate();
-
-  // Initial values for form fields
-  const initialValues = {
-    title: "",
-    postText: "",
-    username: ""
-  };
-
-  // Validation schema using Yup
+  const Post_EndPoint_Constant = "http://localhost:10/posts";
+  const Success_creating_the_post = "The post has been created successfully";
+    const authContext = useContext(AuthContext);
+    useEffect(() => {
+      const accessToken = sessionStorage.getItem("accessToken");
+     if (accessToken) {
+        authContext.setAuthState(true);
+    }
+    }, []);
+    const navigate = useNavigate();
+    const initialValues = {
+      title: "",
+      postText: "",
+      username: ""
+    };
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("You must enter a title"),
     postText: Yup.string().required("You must enter post text"),
     username: Yup.string().min(3).max(15).required("You must enter a username"),
   });
-
-  // Function to handle form submission
   const onSubmit = (data, { resetForm }) => {
-    axios.post("http://localhost:10/posts", {
+    axios.post(Post_EndPoint_Constant, {
       title: data.title,
       username: data.username,
       postText: data.postText,
@@ -36,9 +40,9 @@ function CreatePoste() {
       }
     })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           // Notify user on successful post creation and reset the form
-          toast.success("The post has been created successfully");
+          toast.success(Success_creating_the_post);
           setTimeout(() => {
             resetForm();
             navigate("/");
@@ -58,15 +62,7 @@ function CreatePoste() {
         }
       });
   };
-
-  // Function to show error toast
-  const showErrorToast = (message) => {
-    toast.error(message, {
-      autoClose: 5000,
-    });
-  };
-
-  return (
+return (
     <div className="formContainer">
       <ToastContainer />
       {/* Formik wrapper for form handling */}
