@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 import { AuthContext } from "../helpers/AuthContext";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import "../App.css";
 function Poste() {
   const authContext = useContext(AuthContext);
@@ -23,18 +25,33 @@ function Poste() {
   const Error_Comment = "Une erreur s'est produite lors de la création du commentaire";
   const accessToken = sessionStorage.getItem("accessToken")
   const deleteComment = (id) => {
-  axios.delete(`${COMMENT_URL}/${id}`, {
-      headers: {
-        Authorization: accessToken
+  confirmAlert({
+    title: 'Confirm to submit',
+    message: 'Are you sure to do this.',
+    buttons: [
+      {
+        label: 'Yes',
+        onClick: () => {
+          axios.delete(`${COMMENT_URL}/${id}`, {
+              headers: {
+                Authorization: accessToken
+              }
+            })
+            .then((response) => {
+              setComments(response.data);
+              window.location.reload();
+            })
+            .catch((error) => {
+              console.error('Error fetching comments:', error);
+            });
+        }
+      },
+      {
+        label: 'No',
+        onClick: () => window.location.reload()
       }
-    })
-      .then((response) => {
-        setComments(response.data);
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error fetching comments:', error);
-      });
+    ]
+  });
   }
   useEffect(() => {
     fetchPostData();

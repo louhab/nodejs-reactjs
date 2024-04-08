@@ -10,6 +10,14 @@ npm (version 10.2.4 or higher)
 mysql
 git clone https://github.com/louhab/nodejs-reactjs.git
 
+les technologie :
+
+- ReactJS   : pour gerer la partie frontend 
+- NodeJS    : environement d"excution 
+- ExpressJS : pour gerer les route 
+- MySQL     : SGBD
+- Sequelize : Orm
+
 
 Folder Structure
 /client: Contains the frontend React.js application.

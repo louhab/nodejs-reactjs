@@ -13,6 +13,7 @@ function App() {
   const [authState, setAuthState] = useState(false);
   const Validated_Token_URL = "http://localhost:10/users/validate/Token";
   useEffect(() => {
+    console.log(authState)
     const accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       axios.get(Validated_Token_URL, {
@@ -20,9 +21,17 @@ function App() {
       })
       .then((response) => {
         if (response.data.error) {
-          setAuthState(false);
+          setAuthState({
+          username:"",
+          id: "",
+          status :false
+          });
         } else {
-          setAuthState(true);
+          setAuthState({
+          username: response.data.username,
+          id: response.data.id,
+          status :true
+          });
         }
       })
       .catch((error) => {
@@ -33,7 +42,12 @@ function App() {
 
   const Logout = () => {
     sessionStorage.removeItem("accessToken");
-    setAuthState(false);
+    setAuthState({
+          username:"",
+          id: "",
+          status :false
+          }
+    );
     window.location.href = "/";
   }
 
@@ -42,24 +56,21 @@ function App() {
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <div className='navbar'>
-            <Link to="/"> Home</Link>
+            <Link to="/"> Home Page </Link>
             <Link to="/CreatePost"> Create new Post</Link>
             {!authState ? (
               <>
                 <Link to="/Login"> Login</Link>
                 <Link to="/Registration"> Registration</Link>
               </>
-            ) : (
-                <button onClick={
-                  ()=>{
-                      console.log("okey")
-                      Logout();
-                      
-                    }
-              }>  
-                  <FontAwesomeIcon icon={faSignOut}/>
+            ) :(
+            <div>
+            <h1>{authState.username} </h1>
+              <button onClick={() => { Logout(); }}>
+                <FontAwesomeIcon icon={faSignOut} />
               </button>
-            )}
+            </div>
+          )}
           </div>
           <Routes>
             <Route path="/" element={<Home />} />

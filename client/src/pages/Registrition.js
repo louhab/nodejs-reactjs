@@ -9,6 +9,7 @@ import "../App.css";
 
 function Registration() {
     const navigate = useNavigate();
+    const List_Users = "http://localhost:10/users"; 
     const accessToken = sessionStorage.getItem("accessToken")
     // Initial form values
     const initialValues = {
@@ -22,25 +23,23 @@ function Registration() {
     });
     // Function to handle form submission
     const onSubmit = (data) => {
-        axios.post("http://localhost:10/users", data, {
+        axios.post(List_Users, data, {
             headers: {
                 Authorization: accessToken
             }
         })
         .then(response => {
-            // Notify user and navigate on successful registration
             toast("Votre compte a été créé avec succès");
             setTimeout(function() {
                 navigate("/login");
             }, 2000); 
         })
         .catch(error => {
-            // Handle error, such as displaying an error message
             console.error('Error:', error);
         });
     };
 return (
-        <div className="formContainer">
+    <div className="formContainer" style={{ marginTop: "10%" }}>
             <ToastContainer />
             {/* Formik wrapper for form handling */}
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>

@@ -6,6 +6,11 @@ const { sign } = require("jsonwebtoken");
 
 const validateToken = require("../middleware/AuthMiddleware");
 
+router.get("/",  validateToken ,async (req, res) => {
+    
+    const users = await Users.findAll();
+    return res.json(users);
+    })
 router.post("/", async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -36,7 +41,9 @@ router.post("/login", async (req, res) => {
         const accessToken = sign({ username: user.username, id: user.id },
         "importantsecret"
         );
-        res.json(accessToken);
+        res.json({
+            username: user.username ,id:user.id,token:accessToken
+        });
     }).catch(error => {
         console.error("Error comparing passwords:", error);
         res.status(500).send("Error comparing passwords");

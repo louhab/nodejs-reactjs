@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../helpers/AuthContext";
-import { useContext,useEffect } from "react";
+import { useContext } from "react";
 
 function Login() {
   const navigate = useNavigate();
@@ -27,17 +27,15 @@ function Login() {
         username: Yup.string().min(3).max(15).required(""),
         password: Yup.string().min(3).max(20).required(""),
     });
-  useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-        authContext.setAuthState(true);
-    }
-    }, []);
   const onSubmit = (data) => {
     axios.post(LOGIN_URL, data)
       .then(response => {
-        sessionStorage.setItem("accessToken", response.data)
-        authContext.setAuthState(true);
+        sessionStorage.setItem("accessToken", response.data.token)
+        authContext.setAuthState({
+          username: response.data.username,
+          id: response.data.id,
+          status :true
+          });
         if (response.data && response.data.error !== Wrong_User_Namr_Or_Password) {
            toast.success("You logged succesfully");  
            setTimeout(() => {
