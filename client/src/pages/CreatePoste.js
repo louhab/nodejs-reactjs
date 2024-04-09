@@ -7,7 +7,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./CreatePoste.css";
 import { AuthContext } from "../helpers/AuthContext";
-
 function CreatePoste() {
   const Post_EndPoint_Constant = "http://localhost:10/posts";
   const Success_creating_the_post = "The post has been created successfully";

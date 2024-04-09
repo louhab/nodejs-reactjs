@@ -72,48 +72,27 @@ function Poste() {
       });
   };
   const fetchComments = () => {
-    axios.get(`${COMMENT_URL}/${id}`, {
-      headers: {
-        Authorization: accessToken
-      }
-    })
-      .then((response) => {
-        setComments(response.data);
-        
-      })
-      .catch((error) => {
-        console.error('Error fetching comments:', error);
-      });
+    axios.get(`${COMMENT_URL}/${id}`, {headers: {Authorization: accessToken}})
+    .then((response) => {setComments(response.data)})
+    .catch((error) => {console.error('Error fetching comments:', error)});
   };
   const addComment = () => {
-    axios.post(COMMENT_URL,
-      {
-        commentBody: newComment,
-        PostId: id,
-      },
-      {
-        headers: {
-          Authorization: accessToken
-        }
-      }
-    )
-      .then(handleCreateCommentResponse)
-      .catch(handleCreateCommentError);
+    const accessToken = sessionStorage.getItem("accessToken");
+    const data = { commentBody: newComment, PostId: id }
+    axios.post(COMMENT_URL, data, { headers: { Authorization: accessToken } })
+    .then((response) => { 
+       handleCreateCommentResponse(response) 
+    })
   };
   // Gestion de la réponse de création de commentaire
   const handleCreateCommentResponse = (response) => {
     if (response.status === 200 && response.data.error !== USER_NOT_LOGGED_IN_ERROR) {
-      toast.success(Success_Created_Comment);
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    } else {
-      handleCreateCommentError();
-    }
+        toast.success(Success_Created_Comment);
+        setTimeout(() => {window.location.reload();}, 2000);
+        } else {handleCreateCommentError()}
   };
   // Gestion des erreurs lors de la création de commentaire
   const handleCreateCommentError = (error) => {
-    console.error(error);
     toast.error(Error_Comment);
   };
   // Rendu JSX
@@ -125,7 +104,9 @@ function Poste() {
         <div className='post'>
           <div className='title'>{post.title}</div>
           <div className='body'>{post.postText}</div>
-          <div className='footer'>{post.username}</div>
+          <div className='footer'>
+            {post.username}
+          </div>
         </div>
         {/* Comment section */}
         <div className='ml-2'>

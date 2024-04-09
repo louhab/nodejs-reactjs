@@ -30,16 +30,17 @@ function Login() {
   const onSubmit = (data) => {
     axios.post(LOGIN_URL, data)
       .then(response => {
-        sessionStorage.setItem("accessToken", response.data.token)
+        if (response.data && response.data.error !== Wrong_User_Namr_Or_Password) {
+          console.log(response.data)
+          sessionStorage.setItem("accessToken", response.data.token)
         authContext.setAuthState({
           username: response.data.username,
           id: response.data.id,
           status :true
           });
-        if (response.data && response.data.error !== Wrong_User_Namr_Or_Password) {
            toast.success("You logged succesfully");  
            setTimeout(() => {
-             navigate("/");
+             // navigate("/");
           }, 2000);
         } else {
              showErrorToast(Error_authenticated);
