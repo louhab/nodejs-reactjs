@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 module.exports = router;
-const { Posts } = require("../models");
 const validatedToken = require('../middleware/AuthMiddleware');
+const { Posts, Likes } = require("../models");
 
 
 router.get("/" , validatedToken , async (req,res)=>{
     try {
-        const allPosts = await Posts.findAll();
+        const allPosts = await Posts.findAll({ include: [Likes] });
         res.json(allPosts);
     } catch (error) {
         console.error(error);
@@ -27,9 +27,6 @@ router.post("/" , validatedToken , async (req, res) => {
 
 router.get("/:id", validatedToken, async (req, res) => {
     const id = req.params.id
-    console.log("the id is ", id)
-        console.log(req.header)
-
     const post = await Posts.findByPk(id);
       console.log(post)
         res.json(post);

@@ -3,7 +3,8 @@ const router = express.Router();
 const { Comments } = require("../models");
 const validatedToken = require('../middleware/AuthMiddleware');
 
-router.get("/:postId" , validatedToken ,  async (req, res) => {
+router.get("/:postId", validatedToken, async (req, res) => {
+  // by Louhab abderazzak 
   try {
     const postId = req.params.postId;
     const comments = await Comments.findAll({ where: { PostId: postId } });
@@ -16,15 +17,16 @@ router.get("/:postId" , validatedToken ,  async (req, res) => {
   }
 })
 
-router.post("/"  , validatedToken ,   async (req, res) => {
+router.post("/", validatedToken, async (req, res) => {
+  console.log("hello from comments to add ");
+  // by Louhab abderazzak 
   try {
-    const { commentBody, PostId } = req.body;
-    if (!commentBody || !PostId) {
+    if (req.body.commentBody===null || req.body.PostId === null) {
       return res.status(400).json({ error: 'commentBody and postId are required' });
     }
     const comment = await Comments.create({
-      CommentBody: commentBody,
-      PostId: PostId,
+      commentBody : req.body.commentBody,
+      PostId: req.body.PostId,
       username: req.user.username
     });
     res.json(comment);
@@ -35,6 +37,7 @@ router.post("/"  , validatedToken ,   async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
+  // by Louhab abderazzak 
   try {
     const id = parseInt(req.params.id);
     const deletedComment = await Comments.destroy({ where: { id: id } });
@@ -52,6 +55,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  // by Louhab abderazzak 
   try {
     const comments = await Comments.findAll();
     res.json(comments);
